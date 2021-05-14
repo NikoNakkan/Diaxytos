@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Diaxytos</string>
+    <string name="starting_welcome">ΚΑΛΩΣ ΟΡΙΣΕΣ ΣΤΟ\nGIFFARE</string>
+    <string name="starting_sign_up">ΕΓΓΡΑΦΗ</string>
+    <string name="starting_log_in">ΣΥΝΔΕΣΗ</string>
+    <string name="giraffe_image">Giraffe image</string>
+    <string name="details_get_to_know">ΑΣ ΓΝΩΡΙΣΤΟΥΜΕ</string>
+    <string name="age">Ηλικια</string>
+    <string name="gender">Φυλο</string>
+    <string name="team">Ομαδα</string>
+    <string name="_0">0</string>
+    <string name="start">ΑΣ ΞΕΚΙΝΗΣΟΥΜΕ</string>
+
+
 </resources>

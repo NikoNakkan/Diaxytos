@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="age_groups">
+        <item>18–24</item>
+        <item>25–30</item>
+        <item>31–40</item>
+        <item>41–50</item>
+        <item>51–60</item>
+        <item>60+</item>
+    </string-array>
+
+    <string-array name="genders">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+        <item>Not disclosed</item>
+    </string-array>
+</resources>

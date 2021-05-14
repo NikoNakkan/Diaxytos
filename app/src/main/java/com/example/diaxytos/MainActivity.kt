@@ -1,6 +1,7 @@
 package com.example.diaxytos
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -76,4 +77,13 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+    companion object {
+        fun startActivity(context: Context){
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            context.startActivity(intent)
+        }
+    }
+
 }

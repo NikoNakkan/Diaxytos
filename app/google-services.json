@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "235504312450",
+    "project_id": "diaxytos",
+    "storage_bucket": "diaxytos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:235504312450:android:509e85ad0c9cc3d623149b",
+        "android_client_info": {
+          "package_name": "com.example.diaxytos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "235504312450-l4bufj2kqlhhnc6bc571jt6epmqjassi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcFN-Zl7c24xIojgOVJTwIIIMv1Oc3caY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "235504312450-l4bufj2kqlhhnc6bc571jt6epmqjassi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
