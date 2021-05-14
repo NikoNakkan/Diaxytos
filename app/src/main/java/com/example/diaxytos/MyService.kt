@@ -31,6 +31,7 @@ class MyService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+
         if (Build.VERSION.SDK_INT >= 26) {
             val CHANNEL_ID = "your_channel_id"
             val channel = NotificationChannel(
@@ -50,7 +51,15 @@ class MyService : Service() {
 
     }
     override fun onDestroy() {
-        unregisterReceiver(screenReceiver)
+        val broadcastIntent = Intent()
+//        unregisterReceiver(screenReceiver)
+        broadcastIntent.setAction("restartservice");
+        broadcastIntent.setClass(this, Restarter::class.java)
+        this.sendBroadcast(broadcastIntent)
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
     }
 
 }
