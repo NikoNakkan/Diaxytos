@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.diaxytos">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -14,10 +16,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Diaxytos">
+        android:theme="@style/Theme.Diaxytos"
+        android:usesCleartextTraffic="true">
         <service android:name=".MyService" />
 
-        <activity android:name=".userDetails.UserDetailsActivity"></activity>
+        <activity android:name=".userDetails.UserDetailsActivity"/>
         <activity android:name=".StartingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

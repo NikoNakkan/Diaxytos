@@ -44,6 +44,7 @@ class StartingActivity : AppCompatActivity() {
     }
 
     private fun navigateOnStart(){
+        Log.d("TAG", isFirstTime(this).toString())
         Handler().postDelayed({
             if(isFirstTime(this)){
                 UserDetailsActivity.startActivity(this)

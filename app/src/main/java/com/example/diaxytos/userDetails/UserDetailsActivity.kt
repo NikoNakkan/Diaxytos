@@ -13,10 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.diaxytos.MainActivity
 import com.example.diaxytos.R
-import com.example.diaxytos.utils.SpinnerListener
-import com.example.diaxytos.utils.setFirstTime
-import com.example.diaxytos.utils.toast
-import kotlinx.android.synthetic.main.activity_starting.*
+import com.example.diaxytos.utils.*
 import kotlinx.android.synthetic.main.activity_user_details.*
 
 class UserDetailsActivity : AppCompatActivity() {
@@ -41,9 +38,18 @@ class UserDetailsActivity : AppCompatActivity() {
 
         detailsStartButton.setOnClickListener {
             hideButton()
-//            create device for user at TB
-//            setFirstTime()
-            MainActivity.startActivity(this)
+            viewModel.createUsersDevice(
+                onSuccess = {
+                    showButton()
+                    setFirstTime(this)
+                    storeUsersDevice(this, viewModel.deviceId, viewModel.counter)
+                    MainActivity.startActivity(this)
+                },
+                onFailure = {
+                    showButton()
+                    longToast("Something went wrong, please check your Internet connection and try again.")
+                }
+            )
         }
     }
 
