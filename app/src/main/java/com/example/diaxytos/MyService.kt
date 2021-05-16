@@ -52,7 +52,6 @@ class MyService : Service() {
     }
     override fun onDestroy() {
         val broadcastIntent = Intent()
-//        unregisterReceiver(screenReceiver)
         broadcastIntent.setAction("restartservice");
         broadcastIntent.setClass(this, Restarter::class.java)
         this.sendBroadcast(broadcastIntent)
