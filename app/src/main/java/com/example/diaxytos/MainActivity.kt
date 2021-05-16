@@ -2,13 +2,11 @@ package com.example.diaxytos
 
 import NotificationReceiver
 import android.Manifest
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -45,7 +43,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
+
+        val cn = ComponentName(this, MyNotificationListenerService::class.java)
+        val flat: String = Settings.Secure.getString(this.contentResolver, "enabled_notification_listeners")
+        val enabled = flat.contains(cn.flattenToString())
+        if(!enabled)
+            startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
+
         val permissionCheck = ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -57,6 +61,7 @@ class MainActivity : AppCompatActivity() {
                     99
             )
         }
+
         viewModel = ViewModelProvider.AndroidViewModelFactory(application).create(MainViewModel::class.java)
         viewModel.deviceId = intent.getStringExtra(DEVICE_ID_NAME) ?: return
         viewModel.token = intent.getStringExtra(TOKEN_NAME) ?: return
@@ -165,7 +170,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        Log.d("TAG1", getNotificationsCount(this).toString())
+//        Log.d("TAG1", getNotificationsCount(this).toString())
     }
 
 

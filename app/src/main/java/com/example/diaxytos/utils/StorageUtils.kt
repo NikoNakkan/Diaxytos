@@ -2,6 +2,8 @@ package com.example.diaxytos.utils
 
 import android.app.Activity
 import android.app.Service
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
@@ -24,6 +26,10 @@ fun getUsersDevice(activity: Activity) =
     PreferenceManager.getDefaultSharedPreferences(activity.applicationContext)
         .getString(DEVICE_ID, "")
 
+fun getUsersDevice(applicationContext: Context) =
+    PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        .getString(DEVICE_ID, "")
+
 fun storeUsersDevice(activity: Activity, deviceId: String, userNumber: Int){
     val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity.applicationContext)
     sharedPreferences.edit().putString(DEVICE_ID, deviceId).apply()
@@ -36,6 +42,10 @@ fun getNotificationsCount(activity: Activity) =
 
 fun getNotificationsCount(service: Service) =
     PreferenceManager.getDefaultSharedPreferences(service.applicationContext)
+        .getInt(NOTIFICATIONS_COUNT, 0)
+
+fun getNotificationCount(applicationContext: Context) =
+    PreferenceManager.getDefaultSharedPreferences(applicationContext)
         .getInt(NOTIFICATIONS_COUNT, 0)
 
 fun setNotificationCount(service: Service, notificationCount: Int) {

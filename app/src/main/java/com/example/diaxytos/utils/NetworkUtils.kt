@@ -133,6 +133,7 @@ fun getCounter(accessToken: String): Int{
 
 @Throws(Exception::class)
 fun getTimeseries(token: String, deviceId: String): MutableList<String>{
+    Log.d("TAG1", "123")
     val client = OkHttpClient()
 
     val endTs = System.currentTimeMillis()
@@ -164,4 +165,48 @@ fun getTimeseries(token: String, deviceId: String): MutableList<String>{
         Log.e(TAG, "JSONException while parsing result.", e)
         mutableListOf()
     }
+}
+
+fun sendTelemetry(
+    deviceId: String,
+    token: String,
+    device_interactive: String,
+    display_state: Int,
+    system_time: Long,
+    location_type: String,
+    location_id: String,
+    location_conf: Double,
+    battery_level: Int,
+    battery_status: String,
+    network_type: String,
+    notifs_active: Int
+){
+    val client = OkHttpClient()
+
+    val url = "$BASE_URL/api/plugins/telemetry/DEVICE/$deviceId/timeseries/CLIENT_SCOPE"
+
+    val postBody = "{" +
+            "\"device_interactive\": \"$device_interactive\"," +
+            "\"display_state\": \"$display_state\"," +
+            "\"system_time\": \"$system_time\"," +
+//            "\"activity\": \"\"," +
+//            "\"activity_conf\": \"\"," +
+            "\"location_type\": \"$location_type\"," +
+            "\"location_id\": \"$location_id\"," +
+            "\"location_conf\": \"$location_conf\"," +
+            "\"battery_level\": \"$battery_level\"," +
+            "\"battery_status\": \"$battery_status\"," +
+            "\"network_type\": \"$network_type\"," +
+            "\"notifs_active\": \"$notifs_active\"" +
+            "}"
+
+    val request = Request.Builder()
+        .url(url)
+        .header("Content-Type", "application/json")
+        .addHeader("Accept", "*/*")
+        .addHeader("X-Authorization", "Bearer $token")
+        .post(postBody.toRequestBody())
+        .build()
+
+    client.newCall(request).execute()
 }
