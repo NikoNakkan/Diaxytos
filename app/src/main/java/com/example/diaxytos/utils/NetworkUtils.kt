@@ -1,7 +1,9 @@
 package com.example.diaxytos.utils
 
+import android.util.Log
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONException
 import org.json.JSONObject
 import kotlin.jvm.Throws
 
@@ -129,9 +131,37 @@ fun getCounter(accessToken: String): Int{
 }
 
 
-//{
-//    "name": "Participant_0_0",
-//    "type": "Participant"
-//}
-//
-//++ access token
+@Throws(Exception::class)
+fun getTimeseries(token: String, deviceId: String): MutableList<String>{
+    val client = OkHttpClient()
+
+    val endTs = System.currentTimeMillis()
+    val startTs = endTs - 2592000000 // one month before the endTs
+    val key = "location_id"
+    val url = "$BASE_URL/api/plugins/telemetry/DEVICE/$deviceId/values/timeseries?limit=3000&agg=NONE" +
+            "useStrictDataTypes=false&keys=$key&startTs=$startTs&endTs=$endTs"
+
+    val request = Request.Builder()
+        .url(url)
+        .addHeader("Accept", "application/json")
+        .addHeader("X-Authorization", "Bearer $token")
+        .build()
+
+    val response  = client.newCall(request).execute()
+    val responseStr = response.body?.string()  ?: ""
+
+    return try{
+        val jsonArray = JSONObject(responseStr).getJSONArray(key)
+
+        val placesIds = mutableListOf<String>()
+        for (i in 0 until jsonArray.length()){
+            placesIds.add(jsonArray.getJSONObject(i).getString(key))
+        }
+
+        placesIds
+    }
+    catch (e: JSONException){
+        Log.e(TAG, "JSONException while parsing result.", e)
+        mutableListOf()
+    }
+}

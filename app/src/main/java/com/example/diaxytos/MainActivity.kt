@@ -13,22 +13,35 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import com.example.diaxytos.main.MainViewModel
 import com.example.diaxytos.utils.MyNotificationListenerService
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.TileOverlayOptions
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.PlaceLikelihood
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
+import com.google.maps.android.heatmaps.HeatmapTileProvider
 
 
 class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
 
     private var nReceiver: NotificationReceiver? = null
+    private lateinit var map: GoogleMap
+    private lateinit var viewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
+
+        viewModel = ViewModelProvider.AndroidViewModelFactory(application).create(MainViewModel::class.java)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             this.startForegroundService(Intent(this, MyNotificationListenerService::class.java))
@@ -103,11 +116,6 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                             }
-
-
-
-
-
                     }
                 } else {
                     val exception = task.exception
@@ -122,6 +130,21 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync { googleMap ->
+            map = googleMap
+
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(38.246045, 21.735325), 14.0f))
+            viewModel.getPlaces {
+                val providerBuilder = HeatmapTileProvider.Builder()
+                if (viewModel.places.size != 0){
+                    for (place in viewModel.places){
+                        providerBuilder.data(viewModel.places)
+                    }
+                }
+                map.addTileOverlay(TileOverlayOptions().tileProvider(providerBuilder.build()))
+            }
+        }
     }
 
     companion object {

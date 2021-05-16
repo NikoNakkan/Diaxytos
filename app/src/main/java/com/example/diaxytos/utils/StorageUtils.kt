@@ -23,3 +23,7 @@ fun storeUsersDevice(activity: Activity, deviceId: String, userNumber: Int){
     sharedPreferences.edit().putString(DEVICE_ID, deviceId).apply()
     sharedPreferences.edit().putInt(USER_NUMBER, userNumber).apply()
 }
+
+fun getUsersDevice(activity: Activity) =
+    PreferenceManager.getDefaultSharedPreferences(activity.applicationContext)
+        .getString(DEVICE_ID, "")
