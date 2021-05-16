@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.diaxytos.main.MainViewModel
 import com.example.diaxytos.utils.MyNotificationListenerService
+import com.example.diaxytos.utils.getNotificationsCount
 import com.example.diaxytos.utils.toast
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -163,6 +164,8 @@ class MainActivity : AppCompatActivity() {
                 map.addTileOverlay(TileOverlayOptions().tileProvider(providerBuilder.build()))
             }
         }
+
+        Log.d("TAG1", getNotificationsCount(this).toString())
     }
 
 
