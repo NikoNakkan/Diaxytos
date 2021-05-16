@@ -27,7 +27,8 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-
+<!--        <service android:name=".DetectedActivityIntentService" />-->
+<!--        <service android:name=".ActivityDetectionService" />-->
         <activity android:name=".userDetails.UserDetailsActivity"/>
         <activity android:name=".StartingActivity">
             <intent-filter>
@@ -37,7 +38,7 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name=".MainActivity$NotificationReceiver"
+            android:name=".NotificationReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

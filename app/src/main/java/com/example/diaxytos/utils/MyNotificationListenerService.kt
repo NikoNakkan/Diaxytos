@@ -1,22 +1,29 @@
 package com.example.diaxytos.utils
 
+import NotificationReceiver
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.diaxytos.MainActivity
+import com.example.diaxytos.Restarter
+import com.example.diaxytos.ScreenStateChangeReceiver
 
 
 class MyNotificationListenerService : NotificationListenerService() {
+
     var counter : Int=0
+    private var nReceiver= NotificationReceiver()
     override fun onCreate() {
         super.onCreate()
-
+        registerNotificationReceiver()
         // code taken from https://stackoverflow.com/questions/44425584/context-startforegroundservice-did-not-then-call-service-startforeground#45047542
         if (Build.VERSION.SDK_INT >= 26) {
             val CHANNEL_ID = "my_channel_01"
@@ -46,6 +53,13 @@ class MyNotificationListenerService : NotificationListenerService() {
 
     }
 
+    private fun registerNotificationReceiver() {
+        nReceiver = NotificationReceiver()
+            val filter = IntentFilter()
+            filter.addAction("NOTIFICATION_LISTENER")
+            registerReceiver(nReceiver, filter)
+
+    }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         Log.v("Kok","NIK")
@@ -70,6 +84,18 @@ class MyNotificationListenerService : NotificationListenerService() {
         i2.putExtra("notification_event", counter )
         sendBroadcast(i2)
     }
+
+    override fun onDestroy() {
+        val broadcastIntent = Intent()
+        broadcastIntent.setAction("restartservice");
+        broadcastIntent.setClass(this, Restarter::class.java)
+        this.sendBroadcast(broadcastIntent)
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+    }
+
 
 
 

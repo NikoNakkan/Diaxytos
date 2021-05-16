@@ -1,5 +1,6 @@
 package com.example.diaxytos
 
+import NotificationReceiver
 import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -36,7 +37,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
 
-    private var nReceiver: NotificationReceiver? = null
+   // private var nReceiver: NotificationReceiver? = null
     private lateinit var map: GoogleMap
     private lateinit var viewModel: MainViewModel
 
@@ -55,14 +56,16 @@ class MainActivity : AppCompatActivity() {
         } else {
 
             startService(Intent(this, MyService::class.java))
+            startService(Intent(this, MyNotificationListenerService::class.java))
+
         }
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT_WATCH) {
-            nReceiver = NotificationReceiver()
-            val filter = IntentFilter()
-            filter.addAction("NOTIFICATION_LISTENER")
-            registerReceiver(nReceiver, filter)
-        }
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT_WATCH) {
+//            nReceiver = NotificationReceiver()
+//            val filter = IntentFilter()
+//            filter.addAction("NOTIFICATION_LISTENER")
+//            registerReceiver(nReceiver, filter)
+//        }
 
 
         // Initialize the SDK
@@ -152,13 +155,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    internal class NotificationReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            var numberOfNotifications : Int=0
-            numberOfNotifications= intent.getIntExtra("notification_event", 4)
-            Log.v("FATE", numberOfNotifications.toString())
-        }
-    }
 
     companion object {
         private const val DEVICE_ID_NAME = "device_id_name"

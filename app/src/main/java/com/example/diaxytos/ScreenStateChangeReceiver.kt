@@ -72,26 +72,24 @@ class ScreenStateChangeReceiver : BroadcastReceiver(){
 
 
 
-    class MyNotificationListenerService : NotificationListenerService() {
-        var counter : Int=0
-        override fun onCreate() {
-            super.onCreate()
-            var counter : Int=0
-            for (sbn in activeNotifications) {
-                counter++
-
-            }
-
-        }
-        fun getNumberOfNotifications(count : Int) : Int {
-            return counter
-        }
-
-        override fun onNotificationPosted(sbn: StatusBarNotification) {}
-
-        override fun onNotificationRemoved(sbn: StatusBarNotification) {}
-
-
-    }
+//    class MyNotificationListenerService : NotificationListenerService() {
+//        var counter : Int=0
+//        override fun onCreate() {
+//            super.onCreate()
+//            var counter : Int=0
+//            for (sbn in activeNotifications) {
+//                counter++
+//
+//            }
+//
+//        }
+//
+//
+//        override fun onNotificationPosted(sbn: StatusBarNotification) {}
+//
+//        override fun onNotificationRemoved(sbn: StatusBarNotification) {}
+//
+//
+//    }
 
 }
