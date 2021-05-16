@@ -133,7 +133,6 @@ fun getCounter(accessToken: String): Int{
 
 @Throws(Exception::class)
 fun getTimeseries(token: String, deviceId: String): MutableList<String>{
-    Log.d("TAG1", "123")
     val client = OkHttpClient()
 
     val endTs = System.currentTimeMillis()
@@ -156,7 +155,7 @@ fun getTimeseries(token: String, deviceId: String): MutableList<String>{
 
         val placesIds = mutableListOf<String>()
         for (i in 0 until jsonArray.length()){
-            placesIds.add(jsonArray.getJSONObject(i).getString(key))
+            placesIds.add(jsonArray.getJSONObject(i).getString("value"))
         }
 
         placesIds
@@ -165,6 +164,7 @@ fun getTimeseries(token: String, deviceId: String): MutableList<String>{
         Log.e(TAG, "JSONException while parsing result.", e)
         mutableListOf()
     }
+
 }
 
 fun sendTelemetry(

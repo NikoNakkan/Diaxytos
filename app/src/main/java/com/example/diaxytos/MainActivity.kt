@@ -162,6 +162,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.getPlaces {
                 val providerBuilder = HeatmapTileProvider.Builder()
                 if (viewModel.places.size != 0){
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(viewModel.places[0], 15.0f))
                     for (place in viewModel.places){
                         providerBuilder.data(viewModel.places)
                     }
@@ -169,8 +170,6 @@ class MainActivity : AppCompatActivity() {
                 map.addTileOverlay(TileOverlayOptions().tileProvider(providerBuilder.build()))
             }
         }
-
-//        Log.d("TAG1", getNotificationsCount(this).toString())
     }
 
 

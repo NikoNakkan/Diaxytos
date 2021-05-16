@@ -44,6 +44,11 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             val placesIds = getTimeseries(token, deviceId)
 
+            for (i in placesIds.size-1 downTo 0){
+                if (placesIds[i] == ""){
+                    placesIds.removeAt(i)
+                }
+            }
             withContext(Dispatchers.Main) {
                 addPlacesInList(placesIds, onSuccess)
             }
