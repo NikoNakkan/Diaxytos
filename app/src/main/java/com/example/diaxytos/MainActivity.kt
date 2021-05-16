@@ -45,7 +45,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
-
+        val permissionCheck = ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            // ask permissions here using below code
+            ActivityCompat.requestPermissions(
+                    this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    99
+            )
+        }
         viewModel = ViewModelProvider.AndroidViewModelFactory(application).create(MainViewModel::class.java)
         viewModel.deviceId = intent.getStringExtra(DEVICE_ID_NAME) ?: return
         viewModel.token = intent.getStringExtra(TOKEN_NAME) ?: return
@@ -72,70 +82,70 @@ class MainActivity : AppCompatActivity() {
         Places.initialize(applicationContext, "AIzaSyAiNKWf8bXDE6jU_FYFHh0eXJKrcmfZf2w")
 
         // Create a new PlacesClient instance
-        val placesClient = Places.createClient(this)
-        // Use fields to define the data types to return.
-        val placeFields: List<Place.Field> = listOf(
-            Place.Field.NAME,
-            Place.Field.TYPES,
-            Place.Field.ID
-        )
-
-// Use the builder to create a FindCurrentPlaceRequest.
-        val request: FindCurrentPlaceRequest = FindCurrentPlaceRequest.newInstance(placeFields)
-        val permissionCheck = ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            // ask permissions here using below code
-            ActivityCompat.requestPermissions(
-                this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                99
-            )
-        }
-// Call findCurrentPlace and handle the response (first check that the user has granted permission).
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
-            PackageManager.PERMISSION_GRANTED) {
-
-
-            val placeResponse = placesClient.findCurrentPlace(request)
-            placeResponse.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val response = task.result
-                    var mostPossiblePlace : String
-                    var maxLikelihood : Double = 0.0
-                    var location_type : String
-                    var location_id : String
-                    for (placeLikelihood: PlaceLikelihood in response?.placeLikelihoods ?: emptyList()) {
-                        Log.i(
-                            "TAG",
-                            "Place '${placeLikelihood.place.name}' has likelihood: ${placeLikelihood.likelihood} }"
-                        )
-
-                            if(placeLikelihood.likelihood > maxLikelihood){
-                                if(placeLikelihood.likelihood> 0.1){
-                                    Log.v("HAHAAHA", "mpainei")
-                                    mostPossiblePlace = placeLikelihood.place.name.toString()
-                                    maxLikelihood= placeLikelihood.likelihood
-                                   location_type= placeLikelihood.place.types?.get(0).toString()
-                                    location_id=placeLikelihood.place.id.toString()
-                                    Log.v("HAHAHA", location_id + location_type + mostPossiblePlace)
-
-                                }
-
-                            }
-                    }
-                } else {
-                    val exception = task.exception
-                    if (exception is ApiException) {
-                        Log.v("Place", task.exception.toString())
-                        Log.e("TAG", "Place not found: ${exception.statusCode.toString()}")
-                    }
-                }
-            }
-        } else {
-            Log.d("TAG", "error")
-        }
+//        val placesClient = Places.createClient(this)
+//        // Use fields to define the data types to return.
+//        val placeFields: List<Place.Field> = listOf(
+//            Place.Field.NAME,
+//            Place.Field.TYPES,
+//            Place.Field.ID
+//        )
+//
+//// Use the builder to create a FindCurrentPlaceRequest.
+//        val request: FindCurrentPlaceRequest = FindCurrentPlaceRequest.newInstance(placeFields)
+//        val permissionCheck = ContextCompat.checkSelfPermission(
+//            this,
+//            Manifest.permission.ACCESS_FINE_LOCATION
+//        )
+//        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+//            // ask permissions here using below code
+//            ActivityCompat.requestPermissions(
+//                this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+//                99
+//            )
+//        }
+//// Call findCurrentPlace and handle the response (first check that the user has granted permission).
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+//            PackageManager.PERMISSION_GRANTED) {
+//
+//
+//            val placeResponse = placesClient.findCurrentPlace(request)
+//            placeResponse.addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    val response = task.result
+//                    var mostPossiblePlace : String
+//                    var maxLikelihood : Double = 0.0
+//                    var location_type : String
+//                    var location_id : String
+//                    for (placeLikelihood: PlaceLikelihood in response?.placeLikelihoods ?: emptyList()) {
+//                        Log.i(
+//                            "TAG",
+//                            "Place '${placeLikelihood.place.name}' has likelihood: ${placeLikelihood.likelihood} }"
+//                        )
+//
+//                            if(placeLikelihood.likelihood > maxLikelihood){
+//                                if(placeLikelihood.likelihood> 0.1){
+//                                    Log.v("HAHAAHA", "mpainei")
+//                                    mostPossiblePlace = placeLikelihood.place.name.toString()
+//                                    maxLikelihood= placeLikelihood.likelihood
+//                                   location_type= placeLikelihood.place.types?.get(0).toString()
+//                                    location_id=placeLikelihood.place.id.toString()
+//                                    Log.v("HAHAHA", location_id + location_type + mostPossiblePlace)
+//
+//                                }
+//
+//                            }
+//                    }
+//                } else {
+//                    val exception = task.exception
+//                    if (exception is ApiException) {
+//                        Log.v("Place", task.exception.toString())
+//                        Log.e("TAG", "Place not found: ${exception.statusCode.toString()}")
+//                    }
+//                }
+//            }
+//        } else {
+//            Log.d("TAG", "error")
+//        }
 
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
