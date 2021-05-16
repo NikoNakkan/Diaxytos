@@ -43,7 +43,7 @@ class UserDetailsActivity : AppCompatActivity() {
                     showButton()
                     setFirstTime(this)
                     storeUsersDevice(this, viewModel.deviceId, viewModel.counter)
-                    MainActivity.startActivity(this)
+                    MainActivity.startActivity(this, viewModel.deviceId, viewModel.token)
                 },
                 onFailure = {
                     showButton()

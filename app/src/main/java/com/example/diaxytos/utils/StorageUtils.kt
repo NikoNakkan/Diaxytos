@@ -8,6 +8,7 @@ import androidx.preference.PreferenceManager
 private const val FIRST_TIME_KEY = "first_time_key"
 private const val DEVICE_ID = "device_id"
 private const val USER_NUMBER = "user_number"
+private const val NOTIFICATIONS_COUNT = "notifications_count"
 
 fun isFirstTime(activity: Activity): Boolean =
     PreferenceManager.getDefaultSharedPreferences(activity.applicationContext)
@@ -27,3 +28,4 @@ fun storeUsersDevice(activity: Activity, deviceId: String, userNumber: Int){
 fun getUsersDevice(activity: Activity) =
     PreferenceManager.getDefaultSharedPreferences(activity.applicationContext)
         .getString(DEVICE_ID, "")
+

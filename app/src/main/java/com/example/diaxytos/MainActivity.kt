@@ -14,8 +14,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.diaxytos.main.MainViewModel
 import com.example.diaxytos.utils.MyNotificationListenerService
+import com.example.diaxytos.utils.toast
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -27,6 +29,8 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.PlaceLikelihood
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.maps.android.heatmaps.HeatmapTileProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,6 +46,8 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
 
         viewModel = ViewModelProvider.AndroidViewModelFactory(application).create(MainViewModel::class.java)
+        viewModel.deviceId = intent.getStringExtra(DEVICE_ID_NAME) ?: return
+        viewModel.token = intent.getStringExtra(TOKEN_NAME) ?: return
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             this.startForegroundService(Intent(this, MyNotificationListenerService::class.java))
@@ -56,7 +62,6 @@ class MainActivity : AppCompatActivity() {
             val filter = IntentFilter()
             filter.addAction("NOTIFICATION_LISTENER")
             registerReceiver(nReceiver, filter)
-
         }
 
 
@@ -147,14 +152,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    companion object {
-        fun startActivity(context: Context){
-            val intent = Intent(context, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            context.startActivity(intent)
-        }
-    }
-
     internal class NotificationReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             var numberOfNotifications : Int=0
@@ -163,4 +160,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    companion object {
+        private const val DEVICE_ID_NAME = "device_id_name"
+        private const val TOKEN_NAME = "token_name"
+        fun startActivity(context: Context, deviceId: String, token: String){
+            val intent = Intent(context, MainActivity::class.java)
+            intent.putExtra(DEVICE_ID_NAME, deviceId)
+            intent.putExtra(TOKEN_NAME, token)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            context.startActivity(intent)
+        }
+    }
 }

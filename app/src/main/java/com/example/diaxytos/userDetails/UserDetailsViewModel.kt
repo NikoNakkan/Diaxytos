@@ -18,7 +18,7 @@ class UserDetailsViewModel: ViewModel() {
     var team = 0
     var counter = 0
     var deviceId = ""
-    private var token = ""
+    var token = ""
 
     fun createUsersDevice(onSuccess: () -> Unit, onFailure: () -> Unit){
         viewModelScope.launch(Dispatchers.IO) {

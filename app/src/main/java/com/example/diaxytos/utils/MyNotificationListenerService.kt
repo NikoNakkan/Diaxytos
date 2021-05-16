@@ -1,15 +1,39 @@
 package com.example.diaxytos.utils
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import androidx.core.app.NotificationCompat
 
 
 class MyNotificationListenerService : NotificationListenerService() {
     var counter : Int=0
     override fun onCreate() {
         super.onCreate()
+
+        // code taken from https://stackoverflow.com/questions/44425584/context-startforegroundservice-did-not-then-call-service-startforeground#45047542
+        if (Build.VERSION.SDK_INT >= 26) {
+            val CHANNEL_ID = "my_channel_01"
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                "Channel human readable title",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
+                channel
+            )
+            val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("")
+                .setContentText("").build()
+            startForeground(1, notification)
+        }
+
         Log.v("Kok","NIKA")
         for (sbn in getActiveNotifications()) {
             counter++
