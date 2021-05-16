@@ -55,10 +55,9 @@ class MyNotificationListenerService : NotificationListenerService() {
 
     private fun registerNotificationReceiver() {
         nReceiver = NotificationReceiver()
-            val filter = IntentFilter()
-            filter.addAction("NOTIFICATION_LISTENER")
-            registerReceiver(nReceiver, filter)
-
+        val filter = IntentFilter()
+        filter.addAction("NOTIFICATION_LISTENER")
+        registerReceiver(nReceiver, filter)
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
@@ -68,6 +67,7 @@ class MyNotificationListenerService : NotificationListenerService() {
             counter++
 
         }
+        setNotificationCount(this, counter)
         val i2 = Intent("NOTIFICATION_LISTENER")
         i2.putExtra("notification_event", counter )
         sendBroadcast(i2)
@@ -80,6 +80,7 @@ class MyNotificationListenerService : NotificationListenerService() {
             counter++
 
         }
+        setNotificationCount(this, counter)
         val i2 = Intent("NOTIFICATION_LISTENER")
         i2.putExtra("notification_event", counter )
         sendBroadcast(i2)
