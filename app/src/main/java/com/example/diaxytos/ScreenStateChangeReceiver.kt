@@ -118,14 +118,8 @@ class ScreenStateChangeReceiver : BroadcastReceiver(){
                         }
                         location_conf = maxLikelihood
 
-                    } else {
-//        Log.d("123", (SystemClock.elapsedRealtime() + 1000).toString())
-//        alarmManager?.setRepeating(
-//            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-//            /*SystemClock.elapsedRealtime() +*/ 5000,
-//            AlarmManager.INTERVAL_HALF_HOUR,
-//            alarmIntent
-//        )
+                    }
+                    else {
                         val exception = task.exception
                         if (exception is ApiException) {
                             Log.v("Place", task.exception.toString())
