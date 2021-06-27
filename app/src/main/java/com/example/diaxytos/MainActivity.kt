@@ -1,6 +1,5 @@
 package com.example.diaxytos
 
-import NotificationReceiver
 import android.Manifest
 import android.content.*
 import android.content.pm.PackageManager
@@ -15,22 +14,18 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.diaxytos.main.MainViewModel
-import com.example.diaxytos.utils.MyNotificationListenerService
-import com.example.diaxytos.utils.getNotificationsCount
-import com.example.diaxytos.utils.toast
-import com.google.android.gms.common.api.ApiException
+import com.example.diaxytos.utils.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.TileOverlayOptions
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.model.PlaceLikelihood
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 
 class MainActivity : AppCompatActivity() {

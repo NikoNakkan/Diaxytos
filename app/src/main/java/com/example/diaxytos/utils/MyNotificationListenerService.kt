@@ -1,6 +1,5 @@
 package com.example.diaxytos.utils
 
-import NotificationReceiver
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -13,6 +12,7 @@ import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.diaxytos.MainActivity
+import com.example.diaxytos.NotificationReceiver
 import com.example.diaxytos.Restarter
 import com.example.diaxytos.ScreenStateChangeReceiver
 

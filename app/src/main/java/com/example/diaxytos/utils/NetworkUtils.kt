@@ -164,7 +164,6 @@ fun getTimeseries(token: String, deviceId: String): MutableList<String>{
         Log.e(TAG, "JSONException while parsing result.", e)
         mutableListOf()
     }
-
 }
 
 fun sendTelemetry(
@@ -189,8 +188,6 @@ fun sendTelemetry(
             "\"device_interactive\": \"$device_interactive\"," +
             "\"display_state\": \"$display_state\"," +
             "\"system_time\": \"$system_time\"," +
-//            "\"activity\": \"\"," +
-//            "\"activity_conf\": \"\"," +
             "\"location_type\": \"$location_type\"," +
             "\"location_id\": \"$location_id\"," +
             "\"location_conf\": \"$location_conf\"," +
@@ -209,4 +206,38 @@ fun sendTelemetry(
         .build()
 
     client.newCall(request).execute()
+}
+
+
+@Throws(Exception::class)
+fun getModelPrediction(
+    device_interactive: Boolean,
+    display_state: Int,
+    location_conf: Double,
+    battery_level: Int,
+    battery_status: Boolean,
+    notifs_active: Int
+): Long{
+    val client = OkHttpClient()
+
+    val url = "https://diaxytos-313718.oa.r.appspot.com/predict"
+
+    val postBodyBuilder = MultipartBody.Builder().setType(MultipartBody.FORM)
+    postBodyBuilder.addFormDataPart("device_interactive", device_interactive.toString())
+    postBodyBuilder.addFormDataPart("display_state", display_state.toString())
+    postBodyBuilder.addFormDataPart("location_conf", location_conf.toString())
+    postBodyBuilder.addFormDataPart("battery_level", battery_level.toString())
+    postBodyBuilder.addFormDataPart("battery_status", battery_status.toString())
+    postBodyBuilder.addFormDataPart("notifs_active", notifs_active.toString())
+    val postBody = postBodyBuilder.build()
+
+    val request = Request.Builder()
+        .url(url)
+        .post(postBody)
+        .build()
+
+    val response = client.newCall(request).execute()
+
+    val json = JSONObject(response.body?.string() ?: "0")
+    return json["time_prediction"] as Long
 }

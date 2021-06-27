@@ -38,6 +38,7 @@ class ScreenStateChangeReceiver : BroadcastReceiver(){
 
     @RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
     override fun onReceive(p0: Context, p1: Intent?) {
+        val usedTimeAlarmManager = UsedTimeAlarmManager(p0)
 
         var mostPossiblePlace : String = ""
         var maxLikelihood : Double = 0.0
@@ -70,6 +71,7 @@ class ScreenStateChangeReceiver : BroadcastReceiver(){
         val battery_level: Int = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
 
         if(p1?.action.equals(Intent.ACTION_SCREEN_OFF)) {
+            usedTimeAlarmManager.cancelAlarm()
 
             val displayManager :DisplayManager = p0.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
             val display_state: Int = displayManager.getDisplay(0).state
@@ -117,6 +119,13 @@ class ScreenStateChangeReceiver : BroadcastReceiver(){
                         location_conf = maxLikelihood
 
                     } else {
+//        Log.d("123", (SystemClock.elapsedRealtime() + 1000).toString())
+//        alarmManager?.setRepeating(
+//            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+//            /*SystemClock.elapsedRealtime() +*/ 5000,
+//            AlarmManager.INTERVAL_HALF_HOUR,
+//            alarmIntent
+//        )
                         val exception = task.exception
                         if (exception is ApiException) {
                             Log.v("Place", task.exception.toString())
@@ -144,6 +153,8 @@ class ScreenStateChangeReceiver : BroadcastReceiver(){
             }
         }
         else if(p1?.action.equals(Intent.ACTION_SCREEN_ON)) {
+            usedTimeAlarmManager.setTimeCheckingAlarm()
+
             val displayManager :DisplayManager = p0.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
             val display_state: Int = displayManager.getDisplay(0).state
 

@@ -33,6 +33,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        mlModelBinding true
+    }
 }
 
 dependencies {
@@ -63,6 +66,8 @@ dependencies {
     //Heatmap
     implementation 'com.google.maps.android:android-maps-utils:2.2.3'
     implementation 'com.google.maps.android:maps-utils-ktx:2.4.0'
+    implementation 'org.tensorflow:tensorflow-lite-support:0.1.0-rc1'
+    implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0-rc1'
 
     //Testing
     testImplementation 'junit:junit:4.13.2'
